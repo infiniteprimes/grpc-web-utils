@@ -1,0 +1,8 @@
+node_modules
+.DS_Store
+.idea/
+yarn-error.log
+.rollup.cache/
+tsconfig.tsbuildinfo
+lib/
+esm/

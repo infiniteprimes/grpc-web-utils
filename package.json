@@ -1,0 +1,43 @@
+{
+  "name": "@infiniteprimes/grpc-web-utils",
+  "version": "0.0.11",
+  "repository": "git@github.com:infiniteprimes/grpc-web-utils.git",
+  "license": "MIT",
+  "scripts": {
+    "devbuild": "rm -rf .rollup.cache && rm -rf esm && rollup -c",
+    "build": "rollup -c"
+  },
+  "publishConfig": {
+    "@infiniteprimes:registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "esm"
+  ],
+  "module": "./esm/index.js",
+  "typings": "./esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js"
+    }
+  },
+  "dependencies": {
+    "@improbable-eng/grpc-web": "^0.15.0",
+    "@types/node": "^18.7.18"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.1",
+    "@babel/preset-env": "^7.19.1",
+    "@rollup/plugin-typescript": "^8.5.0",
+    "esbuild": "^0.15.8",
+    "prettier": "^2.7.1",
+    "rollup": "^2.79.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-esbuild": "^4.10.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-uglify": "^6.0.4",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.3"
+  }
+}
