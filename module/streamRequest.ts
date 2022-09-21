@@ -8,13 +8,9 @@ export interface streamRequestErr {
   message: string
   trailers: grpc.Metadata
 }
-export interface StreamRequestProps<
-  TRequest extends ProtobufMessage,
-  TResponse extends ProtobufMessage,
-  M extends MethodDefinition<TRequest, TResponse>
-> {
-  service: M
-  request: TRequest
+export interface StreamRequestProps {
+  service: MethodDefinition<ProtobufMessage, ProtobufMessage>
+  request: ProtobufMessage
   metadata: Metadata.ConstructorArg
   fn: {
     onMsgFn: (msg: ProtobufMessage) => void
@@ -22,33 +18,20 @@ export interface StreamRequestProps<
   }
 }
 
-export async function StreamRequest<
-  TRequest extends ProtobufMessage,
-  TResponse extends ProtobufMessage,
-  M extends MethodDefinition<TRequest, TResponse>
->(
-  service: M,
-  request: TRequest,
-  metadata: Metadata.ConstructorArg,
-  fn: {
-    onMsgFn: (msg: ProtobufMessage) => void
-    //手动重连
-    onUnknownFn: () => void
-  }
-) {
+export async function streamRequest(props: StreamRequestProps) {
   return new Promise((resolve, reject) => {
-    grpc.invoke(service, {
+    grpc.invoke(props.service, {
       host: process.env.GATEWAY_URL!,
-      request: request,
-      metadata,
+      request: props.request,
+      metadata: props.metadata,
       onMessage: res => {
-        fn.onMsgFn(res)
+        props.fn.onMsgFn(res)
       },
       onEnd: (code: grpc.Code, message: string, trailers: grpc.Metadata) => {
         if (code === grpc.Code.OK) {
           //console.log('链接完成')
         } else if (code === grpc.Code.Unknown) {
-          fn.onUnknownFn()
+          props.fn.onUnknownFn()
         } else {
           reject({ code, message, trailers } as streamRequestErr)
         }
@@ -57,6 +40,6 @@ export async function StreamRequest<
   })
 }
 
-export function StreamErrChecker(e: streamRequestErr): boolean {
+export function streamErrChecker(e: streamRequestErr): boolean {
   return e.code === grpc.Code.Unavailable
 }
