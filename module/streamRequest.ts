@@ -8,8 +8,21 @@ export interface streamRequestErr {
   message: string
   trailers: grpc.Metadata
 }
+export interface StreamRequestProps<
+  TRequest extends ProtobufMessage,
+  TResponse extends ProtobufMessage,
+  M extends MethodDefinition<TRequest, TResponse>
+> {
+  service: M
+  request: TRequest
+  metadata: Metadata.ConstructorArg
+  fn: {
+    onMsgFn: (msg: ProtobufMessage) => void
+    onUnknownFn: () => void
+  }
+}
 
-export async function streamRequest<
+export async function StreamRequest<
   TRequest extends ProtobufMessage,
   TResponse extends ProtobufMessage,
   M extends MethodDefinition<TRequest, TResponse>
@@ -44,6 +57,6 @@ export async function streamRequest<
   })
 }
 
-export function streamErrChecker(e: streamRequestErr): boolean {
+export function StreamErrChecker(e: streamRequestErr): boolean {
   return e.code === grpc.Code.Unavailable
 }

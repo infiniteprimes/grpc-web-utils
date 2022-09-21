@@ -3,6 +3,15 @@ import { UnaryOutput } from '@improbable-eng/grpc-web/dist/typings/unary'
 import { UnaryMethodDefinition } from '@improbable-eng/grpc-web/dist/typings/service'
 import { Metadata } from '@improbable-eng/grpc-web/dist/typings/metadata'
 
+export interface UnaryRequestProps<
+  TRequest extends grpc.ProtobufMessage,
+  TResponse extends grpc.ProtobufMessage,
+  M extends UnaryMethodDefinition<TRequest, TResponse>
+> {
+  service: M
+  request: TRequest
+  metadata: Metadata.ConstructorArg
+}
 export function UnaryRequest<
   TRequest extends grpc.ProtobufMessage,
   TResponse extends grpc.ProtobufMessage,
@@ -35,6 +44,6 @@ export function UnaryRequest<
   )
 }
 
-export function unaryAuthErrChecker(e: UnaryOutput<grpc.ProtobufMessage>): boolean {
+export function UnaryAuthErrChecker(e: UnaryOutput<grpc.ProtobufMessage>): boolean {
   return e.status === grpc.Code.Unavailable
 }

@@ -1,6 +1,6 @@
 {
   "name": "@infiniteprimes/grpc-web-utils",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "repository": "git@github.com:infiniteprimes/grpc-web-utils.git",
   "license": "MIT",
   "scripts": {
