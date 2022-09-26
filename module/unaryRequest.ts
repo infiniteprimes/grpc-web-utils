@@ -21,7 +21,7 @@ export function unaryRequest(args: UnaryRequestArgs) {
         metadata: args.metadata,
         onEnd: ({ status, statusMessage, headers, message, trailers }) => {
           if (status === grpc.Code.OK && message) {
-            resolve(message)
+            resolve(message.toObject())
           } else {
             reject({
               status,
