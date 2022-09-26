@@ -11,10 +11,7 @@ export interface UnaryRequestArgs {
 }
 export function unaryRequest(args: UnaryRequestArgs) {
   return new Promise(
-    (
-      resolve: (value: unknown) => void,
-      reject: (reason: UnaryOutput<grpc.ProtobufMessage>) => void
-    ) => {
+    (resolve: (value) => void, reject: (reason: UnaryOutput<grpc.ProtobufMessage>) => void) => {
       grpc.unary(args.service, {
         request: args.request,
         host: args.host,
