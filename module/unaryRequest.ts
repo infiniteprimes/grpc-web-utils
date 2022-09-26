@@ -2,6 +2,7 @@ import { grpc } from '@improbable-eng/grpc-web'
 import { UnaryOutput } from '@improbable-eng/grpc-web/dist/typings/unary'
 import { UnaryMethodDefinition } from '@improbable-eng/grpc-web/dist/typings/service'
 import { Metadata } from '@improbable-eng/grpc-web/dist/typings/metadata'
+import { ProtobufMessage } from '@improbable-eng/grpc-web/dist/typings/message'
 
 export interface UnaryRequestArgs {
   service: UnaryMethodDefinition<grpc.ProtobufMessage, grpc.ProtobufMessage>
@@ -11,7 +12,10 @@ export interface UnaryRequestArgs {
 }
 export function unaryRequest(args: UnaryRequestArgs) {
   return new Promise(
-    (resolve: (value) => void, reject: (reason: UnaryOutput<grpc.ProtobufMessage>) => void) => {
+    (
+      resolve: (value: ReturnType<grpc.ProtobufMessage['toObject']>) => void,
+      reject: (reason: UnaryOutput<grpc.ProtobufMessage>) => void
+    ) => {
       grpc.unary(args.service, {
         request: args.request,
         host: args.host,
